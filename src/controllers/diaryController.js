@@ -6,7 +6,13 @@ export const getDiaryController = async (req, res) => {
 
   const diary = await getAllDiary(date, userId);
   if (!diary) {
-    return res.status(404).json({ message: 'No diary found for this date.' });
+    return res
+      .status(404)
+      .json({
+        data: null,
+        message: 'No diary found for this date.',
+        success: false,
+      });
   }
   res.json(diary);
 };
