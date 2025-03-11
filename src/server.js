@@ -20,11 +20,13 @@ export const SetupServer = () => {
   app.use(cookieParser());
 
   app.get('/', (req, res) => {
-    res.write('<html>')
-    res.write('<head><title>Node</title></head>')
-    res.write('<body><h2>It seems that you are lost. If you need a map, say "Hi!"</h2></body>')
-    res.write('</html>')
-    return res.end()
+    res.write('<html>');
+    res.write('<head><title>Node</title></head>');
+    res.write(
+      '<body><h2>It seems that you are lost. If you need a map, say "Hi!"</h2></body>',
+    );
+    res.write('</html>');
+    return res.end();
   });
 
   app.use(router);
