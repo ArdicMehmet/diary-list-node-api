@@ -59,7 +59,6 @@ export const deleteProductDiary = async (userId, date, productId) => {
     { userId, date },
     { $pull: { products: { _id: productId } } },
   );
-  console.log(result);
 
   if (result.modifiedCount === 0) {
     return false;

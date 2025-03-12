@@ -22,9 +22,9 @@ router.get(
 
 router.post(
   '/add',
-  validateBody(productValidationWithDate), // Ürün validasyonu
+  validateBody(productValidationWithDate),
   authenticate,
-  ctrlWrapper(addDiaryController), // Controller wrapper
+  ctrlWrapper(addDiaryController),
 );
 router.delete(
   '/:entryId/:date',
