@@ -62,7 +62,14 @@ export const loginUser = async (email, password) => {
       refreshTokenValidUntil,
     });
 
-    return { accessToken, refreshToken };
+    return {
+      accessToken,
+      accessTokenValidUntil,
+      date: new Date(),
+
+      refreshToken,
+      refreshTokenValidUntil, // ✅ Refresh Token süresi de ekleniyor!
+    };
   } catch (error) {
     console.error('🚨 Login sırasında hata:', error);
     return {
