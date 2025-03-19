@@ -9,10 +9,7 @@ import {
 } from '../controllers/diaryController.js';
 import { isValidDate, isValidEntry } from '../middlewares/isValid.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-import {
-  productValidationWithDate,
-  updateProduct,
-} from '../validations/diary.js';
+import { productValidationWithDate } from '../validations/diary.js';
 import { validateBody } from '../middlewares/validateBody.js';
 
 const router = Router();
@@ -34,7 +31,7 @@ router.post(
 router.patch(
   '/:entryId',
   authenticate,
-  validateBody(updateProduct),
+  validateBody(productValidationWithDate),
   isValidEntry,
   ctrlWrapper(updateDiaryController),
 );

@@ -15,7 +15,7 @@ export const addProductDiary = async (
   product,
   dailyRate = 2000,
 ) => {
-  const userId = user.userId; // kontrol et, gelen veriden id yi nasıl aldığına
+  const userId = user.id; // kontrol et, gelen veriden id yi nasıl aldığına
   // Daily Rate 10 * ağırlık + 6,25 * boy - 5 * yaş - 161 - 10 * (ağırlık - istenen ağırlık)
   // user dan gelicek ağırlık ve boy bilgileri
   const diary = await Diary.findOne({ userId, date });
@@ -33,6 +33,8 @@ export const addProductDiary = async (
     await diary.save();
     return true;
   } else {
+    console.log('Else içinde');
+
     const consumed = product.calories;
     const left = dailyRate - consumed;
     const percentOfDailyRate = (consumed / dailyRate) * 100;

@@ -4,7 +4,6 @@ import {
   getAllDiary,
   updateProductInDiary,
 } from '../services/diary.js';
-import mongoose from 'mongoose';
 export const getDiaryController = async (req, res) => {
   const { date } = req.params;
   const userId = req.user.id; // JWT ya da session'dan gelecek olan id
@@ -22,9 +21,8 @@ export const getDiaryController = async (req, res) => {
 
 export const addDiaryController = async (req, res) => {
   const { title, weight, calories, date } = req.body;
-  //const user = req.user;
-  const tempUserId = new mongoose.Types.ObjectId();
-  const user = { userId: tempUserId };
+  const user = req.user;
+  console.log('İçerde');
 
   await addProductDiary(date, user, { title, weight, calories });
   return res.status(201).json({
@@ -37,22 +35,18 @@ export const addDiaryController = async (req, res) => {
 export const updateDiaryController = async (req, res) => {
   const { entryId } = req.params;
   const product = req.body;
-  //const userId = req.user.id;
-  const tempUserId = new mongoose.Types.ObjectId('67d1830f01546baca6a40169');
-  const userId = tempUserId;
+  const userId = req.user.id;
   const result = await updateProductInDiary(userId, entryId, product);
   res.status(200).json({
-    'message :': 'Bitti',
+    message: 'Ürün başarıyla güncellendi.',
     data: result,
   });
 };
 
 export const deleteDiaryController = async (req, res) => {
   const { entryId, date } = req.params;
-  //const user = req.user;
-  const tempUserId = new mongoose.Types.ObjectId('67d1830f01546baca6a40169');
-  const userId = tempUserId;
-
+  const user = req.user;
+  const userId = user.id;
   const result = await deleteProductDiary(userId, date, entryId);
 
   if (!result) {
