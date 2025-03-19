@@ -24,3 +24,11 @@ export const productValidationWithDate = Joi.object({
       'string.empty': 'Tarih alanı boş olamaz.',
     }),
 });
+
+export const updateProduct = Joi.object({
+  _id: Joi.string().length(24).hex().required().messages({
+    'string.hex': 'Geçersiz _id formatı.',
+    'string.length': 'Geçersiz _id uzunluğu.',
+    'any.required': '_id zorunludur.',
+  }),
+}).concat(productValidationWithDate);

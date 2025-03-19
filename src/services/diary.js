@@ -54,6 +54,36 @@ export const addProductDiary = async (
   }
 };
 
+export const updateProductInDiary = async (userId, entryId, product) => {
+  const { title, weight, calories, date } = product;
+
+  const diary = await Diary.findOneAndUpdate(
+    { userId, date, 'products._id': entryId }, // userId ve products içindeki _id eşleşmeli
+    {
+      $set: {
+        'products.$.title': title,
+        'products.$.weight': weight,
+        'products.$.calories': calories,
+      },
+    },
+    { new: true }, // Güncellenmiş dökümanı almak için
+  );
+
+  if (!diary) {
+    throw new Error('Ürün veya günlük kaydı bulunamadı!');
+  }
+
+  // Yeni toplam kaloriyi hesapla
+  const totalCalories = diary.products.reduce((sum, p) => sum + p.calories, 0);
+  diary.summary.consumed = totalCalories;
+  diary.summary.left = diary.summary.dailyRate - totalCalories;
+  diary.summary.percentOfDailyRate =
+    (totalCalories / diary.summary.dailyRate) * 100;
+
+  await diary.save();
+  return diary;
+};
+
 export const deleteProductDiary = async (userId, date, productId) => {
   const result = await Diary.updateOne(
     { userId, date },

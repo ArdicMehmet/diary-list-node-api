@@ -5,18 +5,22 @@ import {
   addDiaryController,
   deleteDiaryController,
   getDiaryController,
+  updateDiaryController,
 } from '../controllers/diaryController.js';
 import { isValidDate, isValidEntry } from '../middlewares/isValid.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-import { productValidationWithDate } from '../validations/diary.js';
+import {
+  productValidationWithDate,
+  updateProduct,
+} from '../validations/diary.js';
 import { validateBody } from '../middlewares/validateBody.js';
 
 const router = Router();
 
 router.get(
   '/:date',
-  isValidDate,
   authenticate,
+  isValidDate,
   ctrlWrapper(getDiaryController),
 );
 
@@ -26,9 +30,19 @@ router.post(
   authenticate,
   ctrlWrapper(addDiaryController),
 );
+
+router.patch(
+  '/:entryId',
+  authenticate,
+  validateBody(updateProduct),
+  isValidEntry,
+  ctrlWrapper(updateDiaryController),
+);
+export default router;
+
 router.delete(
   '/:entryId/:date',
+  authenticate,
   isValidEntry,
   ctrlWrapper(deleteDiaryController),
 );
-export default router;

@@ -2,6 +2,7 @@ import {
   addProductDiary,
   deleteProductDiary,
   getAllDiary,
+  updateProductInDiary,
 } from '../services/diary.js';
 import mongoose from 'mongoose';
 export const getDiaryController = async (req, res) => {
@@ -30,6 +31,19 @@ export const addDiaryController = async (req, res) => {
     success: true,
     message: 'Ürün başarıyla eklendi.',
     data: { title, weight, calories, date },
+  });
+};
+
+export const updateDiaryController = async (req, res) => {
+  const { entryId } = req.params;
+  const product = req.body;
+  //const userId = req.user.id;
+  const tempUserId = new mongoose.Types.ObjectId('67d1830f01546baca6a40169');
+  const userId = tempUserId;
+  const result = await updateProductInDiary(userId, entryId, product);
+  res.status(200).json({
+    'message :': 'Bitti',
+    data: result,
   });
 };
 
