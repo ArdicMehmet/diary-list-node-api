@@ -58,7 +58,7 @@ export const updateProductInDiary = async (userId, entryId, product) => {
   const { title, weight, calories, date } = product;
 
   const diary = await Diary.findOneAndUpdate(
-    { userId, date, 'products._id': entryId }, // userId ve products içindeki _id eşleşmeli
+    { userId, date, 'products._id': entryId },
     {
       $set: {
         'products.$.title': title,
@@ -66,14 +66,13 @@ export const updateProductInDiary = async (userId, entryId, product) => {
         'products.$.calories': calories,
       },
     },
-    { new: true }, // Güncellenmiş dökümanı almak için
+    { new: true },
   );
 
   if (!diary) {
     throw new Error('Ürün veya günlük kaydı bulunamadı!');
   }
 
-  // Yeni toplam kaloriyi hesapla
   const totalCalories = diary.products.reduce((sum, p) => sum + p.calories, 0);
   diary.summary.consumed = totalCalories;
   diary.summary.left = diary.summary.dailyRate - totalCalories;
