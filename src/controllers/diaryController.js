@@ -22,7 +22,6 @@ export const getDiaryController = async (req, res) => {
 export const addDiaryController = async (req, res) => {
   const { title, weight, calories, date } = req.body;
   const user = req.user;
-  console.log('İçerde');
 
   await addProductDiary(date, user, { title, weight, calories });
   return res.status(201).json({
