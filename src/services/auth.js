@@ -63,10 +63,11 @@ export const loginUser = async (email, password) => {
     });
 
     return {
+      name: user.name,
+      email: user.email,
       accessToken,
       accessTokenValidUntil,
       date: new Date(),
-
       refreshToken,
       refreshTokenValidUntil, // ✅ Refresh Token süresi de ekleniyor!
     };
