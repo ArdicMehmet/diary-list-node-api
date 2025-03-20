@@ -18,6 +18,12 @@ export const addProductDiary = async (
   const userId = user.id; // kontrol et, gelen veriden id yi nasıl aldığına
   // Daily Rate 10 * ağırlık + 6,25 * boy - 5 * yaş - 161 - 10 * (ağırlık - istenen ağırlık)
   // user dan gelicek ağırlık ve boy bilgileri
+  if (user?.currentWeight && user?.height && user?.age && user.desiredWeight) {
+    const weightDiff = Math.max(0, currentWeight - desiredWeight);
+    const { currentWeight, height, desiredWeight, age } = user;
+    dailyRate =
+      10 * currentWeight + 6.25 * height - 5 * age - 161 - 10 * weightDiff;
+  }
   const diary = await Diary.findOne({ userId, date });
   if (diary) {
     diary.products.push(product);
