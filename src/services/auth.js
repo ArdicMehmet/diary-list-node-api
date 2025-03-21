@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { SessionsCollection } from '../db/models/session.js';
 import dotenv from 'dotenv';
+
 //import { config } from '../config.js';
 import {
   ACCESS_TOKEN_EXPIRATION,
@@ -16,13 +17,13 @@ dotenv.config();
 export const registerUser = async (name, email, password) => {
   const existingUser = await UsersCollection.findOne({ email });
   if (existingUser) {
-    throw new Error('E-posta zaten kayıtlı');
+    return { status: false, statusCode: 409, message: 'E-posta zaten kayıtlı' };
   }
 
   const newUser = new UsersCollection({ name, email, password });
   await newUser.save();
 
-  return { message: 'Kullanıcı kaydı başarılı' };
+  return { status: true, statusCode: 201, message: 'Kullanıcı kaydı başarılı' };
 };
 
 // **Kullanıcı Giriş (Login)**

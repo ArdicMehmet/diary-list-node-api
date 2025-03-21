@@ -27,6 +27,7 @@ export const addProductDiary = async (
   const diary = await Diary.findOne({ userId, date });
   if (diary) {
     diary.products.push(product);
+    diary.products.filter((s) => s.date == date);
     const totalCalories = diary.products.reduce(
       (sum, product) => sum + product.calories,
       0,

@@ -20,6 +20,27 @@ const usersSchema = new Schema(
       type: String, // Refresh token saklamak için alan
       default: null,
     },
+    age: {
+      type: Number,
+      default: null,
+    },
+    height: {
+      type: Number,
+      default: null,
+    },
+    deservedWeight: {
+      type: Number,
+      default: null,
+    },
+    currentWeight: {
+      type: Number,
+      default: null,
+    },
+    bloodType: {
+      type: String,
+      enum: ['0', 'A', 'B', 'AB', null],
+      default: null,
+    },
   },
   {
     timestamps: true,

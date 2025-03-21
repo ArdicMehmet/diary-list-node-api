@@ -9,7 +9,7 @@ export const register = async (req, res) => {
   const { name, email, password } = req.body;
   const result = await registerUser(name, email, password);
 
-  if (result.error) {
+  if (!result.status) {
     return res
       .status(result.statusCode || 400)
       .json({ message: result.message });
