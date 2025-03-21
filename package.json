@@ -4,7 +4,8 @@
   "description": "",
   "main": "eslint.config.js",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "seed": "node src/db/seed/seedProducts.js"
   },
   "repository": {
     "type": "git",

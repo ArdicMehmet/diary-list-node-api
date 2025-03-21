@@ -7,7 +7,7 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
 import router from './routers/index.js';
 
-const PORT = Number(env('PORT', '3000'));
+const PORT = Number(env('PORT', '3001'));
 
 /* const logger = pino({
   level: 'info',
@@ -27,7 +27,7 @@ const PORT = Number(env('PORT', '3000'));
     return res.end();
   });
 
-  app.use(router);
+  app.use('/api', router);
   app.use('*', notFoundHandler);
   app.use(errorHandler);
 
