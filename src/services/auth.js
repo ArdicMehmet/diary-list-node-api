@@ -62,6 +62,8 @@ export const loginUser = async (email, password) => {
       accessTokenValidUntil,
       refreshTokenValidUntil,
     });
+    user.refreshToken = refreshToken;
+    user.save();
 
     return {
       name: user.name,
