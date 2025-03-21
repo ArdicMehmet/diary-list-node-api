@@ -28,7 +28,7 @@ const usersSchema = new Schema(
       type: Number,
       default: null,
     },
-    deservedWeight: {
+    desiredWeight: {
       type: Number,
       default: null,
     },

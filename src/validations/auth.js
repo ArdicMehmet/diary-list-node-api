@@ -10,10 +10,10 @@ export const userInfoValidation = Joi.object({
     'number.positive': 'Ağırlık değeri pozitif olmalıdır.',
     'any.required': 'currentWeight adı zorunludur.',
   }),
-  deservedWeight: Joi.number().positive().required().messages({
+  desiredWeight: Joi.number().positive().required().messages({
     'number.base': 'İstenilen ağırlık sayı olmalıdır.',
     'number.positive': 'İstenilen ağırlık pozitif olmalıdır.',
-    'any.required': 'deservedWeight zorunludur.',
+    'any.required': 'desiredWeight zorunludur.',
   }),
   height: Joi.number().positive().required().messages({
     'number.base': 'İstenilen boy sayı olmalıdır.',

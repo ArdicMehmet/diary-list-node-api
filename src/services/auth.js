@@ -84,14 +84,14 @@ export const loginUser = async (email, password) => {
 };
 
 export const addUserInfo = async ({ id }, userInfo) => {
-  const { age, currentWeight, deservedWeight, height, bloodType } = userInfo;
+  const { age, currentWeight, desiredWeight, height, bloodType } = userInfo;
   const user = await UsersCollection.findOneAndUpdate(
     { _id: id },
     {
       $set: {
         currentWeight: currentWeight,
         age: age,
-        deservedWeight: deservedWeight,
+        desiredWeight: desiredWeight,
         height: height,
         bloodType: bloodType,
       },
