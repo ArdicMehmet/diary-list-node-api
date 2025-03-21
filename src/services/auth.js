@@ -101,7 +101,11 @@ export const addUserInfo = async ({ id }, userInfo) => {
   if (!user) {
     throw new Error('User bulunamadı!');
   }
-  return user;
+  const weightDiff = Math.max(0, currentWeight - desiredWeight);
+  const dailyRate =
+    10 * currentWeight + 6.25 * height - 5 * age - 161 - 10 * weightDiff;
+
+  return { user, dailyRate };
 };
 
 // **Çıkış (Logout)**

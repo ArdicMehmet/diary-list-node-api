@@ -18,7 +18,6 @@ export const addProductDiary = async (
   const userId = user.id; // kontrol et, gelen veriden id yi nasıl aldığına
   // Daily Rate 10 * ağırlık + 6,25 * boy - 5 * yaş - 161 - 10 * (ağırlık - istenen ağırlık)
   // user dan gelicek ağırlık ve boy bilgileri
-  console.log('SERVİCES USERRR : ', user);
   const { currentWeight, height, desiredWeight, age } = user;
   if (currentWeight && height && age && desiredWeight) {
     const weightDiff = Math.max(0, currentWeight - desiredWeight);
