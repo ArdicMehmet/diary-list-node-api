@@ -83,6 +83,27 @@ export const loginUser = async (email, password) => {
   }
 };
 
+export const addUserInfo = async ({ id }, userInfo) => {
+  const { age, currentWeight, deservedWeight, height, bloodType } = userInfo;
+  const user = await UsersCollection.findOneAndUpdate(
+    { _id: id },
+    {
+      $set: {
+        currentWeight: currentWeight,
+        age: age,
+        deservedWeight: deservedWeight,
+        height: height,
+        bloodType: bloodType,
+      },
+    },
+    { new: true },
+  );
+  if (!user) {
+    throw new Error('User bulunamadı!');
+  }
+  return user;
+};
+
 // **Çıkış (Logout)**
 export const logoutUser = async (refreshToken) => {
   if (!refreshToken) {

@@ -3,6 +3,7 @@ import {
   loginUser,
   logoutUser,
   refreshTokenUser,
+  addUserInfo,
 } from '../services/auth.js';
 
 export const register = async (req, res) => {
@@ -31,6 +32,15 @@ export const login = async (req, res) => {
   res.json(result);
 };
 
+export const addUserInfoController = async (req, res) => {
+  const userInfo = req.body;
+  const user = req.user;
+  const result = await addUserInfo(user, userInfo);
+  res.status(201).json({
+    message: true,
+    data: result,
+  });
+};
 export const logout = async (req, res) => {
   const { refreshToken } = req.body;
   const result = await logoutUser(refreshToken);
