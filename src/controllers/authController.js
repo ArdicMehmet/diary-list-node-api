@@ -41,6 +41,13 @@ export const addUserInfoController = async (req, res) => {
     data: result,
   });
 };
+export const getUserController = async (req, res) => {
+  const user = req.user;
+  res.status(201).json({
+    message: true,
+    data: user,
+  });
+};
 export const logout = async (req, res) => {
   const { refreshToken } = req.body;
   const result = await logoutUser(refreshToken);

@@ -13,7 +13,7 @@ export const isValidDate = (req, res, next) => {
 export const isValidEntry = (req, res, next) => {
   const { entryId } = req.params;
   if (!mongoose.Types.ObjectId.isValid(entryId)) {
-    return res.status(400).json({ error: 'Invalid entry format or value.' });
+    return res.status(400).json({ error: 'Geçerli product id girilmedi' });
   }
   next();
 };
@@ -21,7 +21,7 @@ export const isValidEntry = (req, res, next) => {
 export const isValidProductId = (req, res, next) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ error: 'Invalid id format or value.' });
+    return res.status(400).json({ error: 'Geçerli id girilmedi' });
   }
   next();
 };
