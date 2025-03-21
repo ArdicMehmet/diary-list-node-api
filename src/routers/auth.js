@@ -18,7 +18,6 @@ router.get('/user', authenticate, ctrlWrapper(getUserController));
 
 router.post('/register', ctrlWrapper(register));
 router.post('/login', ctrlWrapper(login));
-router.post('/logout', ctrlWrapper(logout));
 router.post('/token', ctrlWrapper(refreshToken));
 
 router.patch(
@@ -27,4 +26,6 @@ router.patch(
   validateBody(userInfoValidation),
   ctrlWrapper(addUserInfoController),
 );
+
+router.delete('/logout', ctrlWrapper(logout));
 export default router;
