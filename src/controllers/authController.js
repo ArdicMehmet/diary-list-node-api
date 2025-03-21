@@ -44,8 +44,9 @@ export const addUserInfoController = async (req, res) => {
 export const getUserController = async (req, res) => {
   const user = req.user;
   res.status(201).json({
-    message: true,
+    message: 'Kayıt başarılı',
     data: user,
+    status: true,
   });
 };
 export const logout = async (req, res) => {
