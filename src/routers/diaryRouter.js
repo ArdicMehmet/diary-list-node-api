@@ -35,7 +35,6 @@ router.patch(
   isValidEntry,
   ctrlWrapper(updateDiaryController),
 );
-export default router;
 
 router.delete(
   '/:entryId/:date',
@@ -43,3 +42,5 @@ router.delete(
   isValidEntry,
   ctrlWrapper(deleteDiaryController),
 );
+
+export default router;
