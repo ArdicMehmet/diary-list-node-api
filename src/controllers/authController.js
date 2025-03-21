@@ -59,7 +59,7 @@ export const logout = async (req, res) => {
       .json({ message: result.message });
   }
 
-  res.json(result);
+  res.status(200).json(result);
 };
 
 export const refreshToken = async (req, res) => {
