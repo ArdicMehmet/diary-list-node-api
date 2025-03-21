@@ -40,8 +40,6 @@ export const addProductDiary = async (
     await diary.save();
     return true;
   } else {
-    console.log('Else içinde');
-
     const consumed = product.calories;
     const left = dailyRate - consumed;
     const percentOfDailyRate = (consumed / dailyRate) * 100;
