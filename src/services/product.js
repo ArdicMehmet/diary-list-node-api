@@ -2,14 +2,29 @@ import Product from '../db/models/Product.js';
 
 export const productService = {
   async getProducts() {
-    return await Product.find();
+    const result = await Product.find();
+
+    if (!result) {
+      return { message: 'Ürün kaydı bulunamadı!', status: false, data: null };
+    }
+    return { message: 'Ürün başarıyla bulundu!', status: true, data: result };
   },
 
   async getProductById(id) {
-    return await Product.findById(id);
+    const result = await Product.findById(id);
+    if (!result) {
+      return { message: 'Ürün kaydı bulunamadı!', status: false, data: null };
+    }
+    return { message: 'Ürün başarıyla bulundu!', status: true, data: result };
   },
 
-  async searchProducts({ searchText, categories, minCalories, maxCalories, bloodType }) {
+  async searchProducts({
+    searchText,
+    categories,
+    minCalories,
+    maxCalories,
+    bloodType,
+  }) {
     const query = {};
 
     // Metin araması
@@ -19,7 +34,9 @@ export const productService = {
 
     // Kategori filtresi
     if (categories) {
-      query.categories = { $in: Array.isArray(categories) ? categories : [categories] };
+      query.categories = {
+        $in: Array.isArray(categories) ? categories : [categories],
+      };
     }
 
     // Kalori aralığı filtresi
@@ -38,6 +55,10 @@ export const productService = {
       query[`groupBloodNotAllowed.${bloodType}`] = false;
     }
 
-    return await Product.find(query);
-  }
-}; 
+    const result = await Product.find(query);
+    if (!result) {
+      return { message: 'Ürün kaydı bulunamadı!', status: false, data: null };
+    }
+    return { message: 'Ürün başarıyla bulundu!', status: true, data: result };
+  },
+};
