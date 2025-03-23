@@ -1,0 +1,377 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Slim Moms API",
+    "description": "API for Slim Moms application"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication endpoints"
+    },
+    {
+      "name": "Nutrition",
+      "description": "Nutrition and calorie calculation endpoints"
+    },
+    {
+      "name": "Diary",
+      "description": "Daily food diary endpoints"
+    },
+    {
+      "name": "Products",
+      "description": "Product search and management endpoints"
+    }
+  ],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User successfully registered"
+          },
+          "400": {
+            "description": "Invalid request body"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login a user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully logged in"
+          },
+          "400": {
+            "description": "Invalid username or password"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Logout a user",
+        "responses": {
+          "200": {
+            "description": "User successfully logged out"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auth/token": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refresh access token",
+        "responses": {
+          "200": {
+            "description": "Access token refreshed successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/public/nutrition": {
+      "get": {
+        "tags": ["Nutrition"],
+        "summary": "Calculate daily calorie needs",
+        "parameters": [
+          {
+            "name": "age",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "weight",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "height",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Daily calorie needs calculated successfully"
+          },
+          "400": {
+            "description": "Invalid query parameters"
+          }
+        }
+      }
+    },
+    "/api/user/nutrition": {
+      "post": {
+        "tags": ["Nutrition"],
+        "summary": "Save daily calorie needs for a user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NutritionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Daily calorie needs saved successfully"
+          },
+          "400": {
+            "description": "Invalid request body"
+          }
+        }
+      }
+    },
+    "/api/products/search": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Search for products",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Products found successfully"
+          },
+          "400": {
+            "description": "Invalid query parameter"
+          }
+        }
+      }
+    },
+    "/api/diary/add": {
+      "post": {
+        "tags": ["Diary"],
+        "summary": "Add a food entry to the diary",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddFoodEntryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Food entry added successfully"
+          },
+          "400": {
+            "description": "Invalid request body"
+          }
+        }
+      }
+    },
+    "/api/diary/remove/{entryId}": {
+      "delete": {
+        "tags": ["Diary"],
+        "summary": "Remove a food entry from the diary",
+        "parameters": [
+          {
+            "name": "entryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Food entry removed successfully"
+          },
+          "404": {
+            "description": "Food entry not found"
+          }
+        }
+      }
+    },
+    "/api/diary/{date}": {
+      "get": {
+        "tags": ["Diary"],
+        "summary": "Get food entries for a specific date",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Food entries retrieved successfully"
+          },
+          "404": {
+            "description": "No entries found for the specified date"
+          }
+        }
+      }
+    },
+    "/api/diary/update/{entryId}": {
+      "put": {
+        "tags": ["Diary"],
+        "summary": "Update a food entry",
+        "parameters": [
+          {
+            "name": "entryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodEntryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Food entry updated successfully"
+          },
+          "404": {
+            "description": "Food entry not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "NutritionRequest": {
+        "type": "object",
+        "properties": {
+          "age": {
+            "type": "integer"
+          },
+          "weight": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "bloodType": {
+            "type": "integer"
+          }
+        }
+      },
+      "AddFoodEntryRequest": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "product": {
+            "type": "string"
+          },
+          "calories": {
+            "type": "integer"
+          }
+        }
+      },
+      "UpdateFoodEntryRequest": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "type": "string"
+          },
+          "calories": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

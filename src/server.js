@@ -6,6 +6,8 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
 import router from './routers/index.js';
+import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -13,11 +15,34 @@ const logger = pino({
   level: 'info',
 });
 
+// Swagger ayarları
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Slim Moms API',
+      version: '1.0.0',
+      description: 'API for Slim Moms application',
+    },
+    servers: [
+      {
+        url: 'http://localhost:3000',
+      },
+    ],
+  },
+  apis: ['./src/routers/*.js'],
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions); // Swagger dokümantasyonunu oluştur
+
 export const SetupServer = () => {
   const app = express();
   app.use(express.json());
   app.use(cors());
   app.use(cookieParser());
+
+  // Swagger UI'yi /api-docs endpoint'inde sun
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
   app.get('/', (req, res) => {
     res.write('<html>');
@@ -35,6 +60,6 @@ export const SetupServer = () => {
   app.use(errorHandler);
 
   app.listen(PORT, () => {
-    console.log(`server running on ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
   });
 };
