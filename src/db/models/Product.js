@@ -30,8 +30,8 @@ const productSchema = new mongoose.Schema({
 });
 
 // Full-text arama için index ekleme
-productSchema.index({ title: 'text', categories: 'text' });
+productSchema.index({ title: 'text'});
 
 const Product = mongoose.model('Product', productSchema);
 
-export default Product; 
+export default Product;

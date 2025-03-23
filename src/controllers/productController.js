@@ -19,13 +19,9 @@ export const productController = {
   },
 
   async searchProducts(req, res) {
-    const { q, categories, minCalories, maxCalories, bloodType } = req.query;
+    const { q } = req.query;
     const result = await productService.searchProducts({
       searchText: q,
-      categories,
-      minCalories: minCalories ? Number(minCalories) : undefined,
-      maxCalories: maxCalories ? Number(maxCalories) : undefined,
-      bloodType: bloodType ? Number(bloodType) : undefined,
     });
     if (!result.status) {
       return res.status(404).json(result);
