@@ -66,8 +66,7 @@ export const loginUser = async (email, password) => {
     user.save();
 
     return {
-      name: user.name,
-      email: user.email,
+      user,
       accessToken,
       accessTokenValidUntil,
       date: new Date(),
