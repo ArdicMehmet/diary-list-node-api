@@ -1,7 +1,12 @@
-import { Router } from 'express';
-import dairyRouter from './diaryRouter.js';
-const router = Router();
+import express from 'express';
+import authRouter from './auth.js';
+import diaryRouter from './diary.js';
+import productRouter from './productRouter.js';
 
-router.use('/api/diary', dairyRouter);
+const router = express.Router();
+
+router.use('/auth', authRouter);
+router.use('/diary', diaryRouter);
+router.use('/products', productRouter);
 
 export default router;

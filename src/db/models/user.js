@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const usersSchema = new Schema(
   {
@@ -15,6 +16,31 @@ const usersSchema = new Schema(
       type: String,
       required: true,
     },
+    refreshToken: {
+      type: String, // Refresh token saklamak için alan
+      default: null,
+    },
+    age: {
+      type: Number,
+      default: null,
+    },
+    height: {
+      type: Number,
+      default: null,
+    },
+    desiredWeight: {
+      type: Number,
+      default: null,
+    },
+    currentWeight: {
+      type: Number,
+      default: null,
+    },
+    bloodType: {
+      type: String,
+      enum: ['0', 'A', 'B', 'AB', null],
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -22,9 +48,25 @@ const usersSchema = new Schema(
   },
 );
 
+// Kullanıcı kaydedilmeden önce şifreyi hash'le
+usersSchema.pre('save', async function (next) {
+  console.log('şifre hashlanıyor');
+  if (!this.isModified('password')) return next();
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+// Şifre doğrulama fonksiyonu
+usersSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+// JSON dönüşümünde şifre ve refresh token'ı gizle
 usersSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
+  delete obj.refreshToken;
   return obj;
 };
 

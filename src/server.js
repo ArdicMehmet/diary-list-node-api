@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import pino from 'pino';
-import { env } from './utils/env.js';
+/* import pino from 'pino';
+ */ import { env } from './utils/env.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
@@ -9,13 +9,12 @@ import router from './routers/index.js';
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
-const PORT = Number(env('PORT', '3000'));
+const PORT = Number(env('PORT', '3001'));
 
-const logger = pino({
+/*const logger = pino({
   level: 'info',
-});
+});*/
 
-// Swagger ayarları
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',
@@ -33,16 +32,13 @@ const swaggerOptions = {
   apis: ['./src/routers/*.js'],
 };
 
-const swaggerDocs = swaggerJsDoc(swaggerOptions); // Swagger dokümantasyonunu oluştur
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 export const SetupServer = () => {
   const app = express();
   app.use(express.json());
   app.use(cors());
   app.use(cookieParser());
-
-  // Swagger UI'yi /api-docs endpoint'inde sun
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
   app.get('/', (req, res) => {
     res.write('<html>');
@@ -53,9 +49,9 @@ export const SetupServer = () => {
     res.write('</html>');
     return res.end();
   });
-
-  app.use(router);
-
+  // Swagger UI'yi /api-docs endpoint'inde sun
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+  app.use('/api', router);
   app.use('*', notFoundHandler);
   app.use(errorHandler);
 
