@@ -45,10 +45,9 @@ export const updateDiaryController = async (req, res) => {
 export const deleteDiaryController = async (req, res) => {
   const { entryId, date } = req.params;
   const user = req.user;
-  const userId = user.id;
-  const result = await deleteProductDiary(userId, date, entryId);
+  const result = await deleteProductDiary(user, date, entryId);
 
-  if (!result) {
+  if (!result.success) {
     return res
       .status(404)
       .json({ success: false, message: 'Eşleşen veri bulunamadı', data: null });
@@ -57,6 +56,6 @@ export const deleteDiaryController = async (req, res) => {
   return res.status(200).json({
     success: true,
     message: `${entryId} id li ürün başarıyla silindi.`,
-    data: null,
+    data: result.data,
   });
 };
