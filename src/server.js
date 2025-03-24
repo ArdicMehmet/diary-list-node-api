@@ -49,7 +49,7 @@ export const SetupServer = () => {
     res.write('</html>');
     return res.end();
   });
-  // Swagger UI'yi /api-docs endpoint'inde sun
+
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
   app.use('/api', router);
   app.use('*', notFoundHandler);
