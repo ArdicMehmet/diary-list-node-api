@@ -1,5 +1,5 @@
 import Diary from '../db/models/Diary.js';
-
+import Products from '../db/models/Product.js';
 export const getAllDiary = async (date, userId) => {
   const diary = await Diary.findOne({ date, userId });
 
@@ -15,34 +15,44 @@ export const addProductDiary = async (
   product,
   dailyRate = 2000,
 ) => {
-  const userId = user.id; // kontrol et, gelen veriden id yi nasıl aldığına
-  // Daily Rate 10 * ağırlık + 6,25 * boy - 5 * yaş - 161 - 10 * (ağırlık - istenen ağırlık)
-  // user dan gelicek ağırlık ve boy bilgileri
+  const userId = user.id;
   const { currentWeight, height, desiredWeight, age } = user;
 
+  // Günlük kalori ihtiyacını hesapla
   if (currentWeight && height && age && desiredWeight) {
     const weightDiff = Math.max(0, currentWeight - desiredWeight);
-
     dailyRate =
       10 * currentWeight + 6.25 * height - 5 * age - 161 - 10 * weightDiff;
   }
-  console.log('Daily Rate : ', dailyRate);
 
+  const dbProduct = await Products.findOne({ title: product.title });
+  console.log('dbProduct :', dbProduct);
+
+  console.log('Gelen Calories :', product.calories);
+  if (dbProduct) {
+    const calculatedCalories = (product.weight * dbProduct.calories) / 100;
+    product.calories = calculatedCalories;
+  }
+  console.log('Calculated Calories : ', product.calories);
+
+  // Günlüğü bul veya yeni bir tane oluştur
   const diary = await Diary.findOne({ userId, date });
+
   if (diary) {
     diary.products.push(product);
-    diary.products.filter((s) => s.date == date);
+
     const totalCalories = diary.products.reduce(
       (sum, p) => sum + p.calories,
       0,
     );
-    diary.summary.dailyRate = dailyRate;
-    diary.summary.consumed = totalCalories;
-    diary.summary.left = dailyRate - totalCalories;
-    diary.summary.percentOfDailyRate = (totalCalories / dailyRate) * 100;
+    diary.summary = {
+      dailyRate,
+      consumed: totalCalories,
+      left: dailyRate - totalCalories,
+      percentOfDailyRate: (totalCalories / dailyRate) * 100,
+    };
 
     await diary.save();
-    return true;
   } else {
     const consumed = product.calories;
     const left = dailyRate - consumed;
@@ -52,17 +62,13 @@ export const addProductDiary = async (
       userId,
       date,
       products: [product],
-      summary: {
-        left,
-        consumed,
-        dailyRate,
-        percentOfDailyRate,
-      },
+      summary: { dailyRate, consumed, left, percentOfDailyRate },
     });
 
     await newDiary.save();
-    return true;
   }
+
+  return true;
 };
 
 export const updateProductInDiary = async (userId, entryId, product) => {
