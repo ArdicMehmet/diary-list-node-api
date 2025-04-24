@@ -8,7 +8,14 @@ export const productController = {
     }
     res.status(200).json(result);
   },
-
+  async getProductsByPage(req, res) {
+    const page = parseInt(req.params.page, 10) || 1;
+    const result = await productService.getProductsByPage(page);
+    if (!result.status) {
+      return res.status(404).json(result);
+    }
+    res.status(200).json(result);
+  },
   async getProductById(req, res) {
     const { id } = req.params;
     const result = await productService.getProductById(id);

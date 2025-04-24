@@ -27,6 +27,9 @@ const parseTime = (timeString) => {
   }
 };
 
+export const PAGES = {
+  size: 30,
+};
 // **Token geçerlilik süreleri**
 export const ACCESS_TOKEN_EXPIRATION = parseTime(
   env('ACCESS_TOKEN_EXPIRES', '15m'),

@@ -19,6 +19,8 @@ const router = express.Router();
  */
 router.get('/', ctrlWrapper(productController.getProducts));
 
+router.get('/:page', ctrlWrapper(productController.getProductsByPage));
+
 /**
  * @swagger
  * /products/search:
